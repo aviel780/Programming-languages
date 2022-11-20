@@ -1,0 +1,138 @@
+#lang pl
+#|
+i take the list of lists and go over all of them recursively
+eche time i append the first list from the list and send agien the list without the first list
+when the list is over i add a null value to complete the list.
+its was herd to find the dfinison of list of lists and the synetx took time.
+|#
+; q1 open-list
+( :  open-list : (Listof(Listof Number)) -> (Listof Number))
+(define ( open-list listsvalue)
+   (if (null? listsvalue) null
+       (append (first listsvalue) ( open-list (rest listsvalue)))))
+
+;chek the exam case
+(test (open-list '((1 2 3) (2 3 3 4) (9 2 -1) (233 11 
+90))) => '(1 2 3 2 3 3 4 9 2 -1 233 11 90))
+
+;chek the empty case
+(test (open-list '()) => '())
+
+;chek the anoter case
+(test (open-list '((-1 1 -2 2) (-3 3 -4) (4 -5 6) (-6))) => '(-1 1 -2 2 -3 3 -4 4 -5 6 -6))
+#|
+
+q2
+i create 2  helper function. one of them find the max and one of the the min.
+i send to them list of numbers (use the open-list) from the prime function and the recrcivly i comper betwen the numbers.
+and get from the the min max of the numbers.
+|#
+
+;q2 min&max
+; min helper
+( : minimum : (Listof Number) -> Number)
+(define (minimum listmin)
+  (if (null? listmin) +inf.0
+      (min (first listmin) (minimum(rest listmin)))))
+
+;;max helper
+( : maxsimum : (Listof Number) -> Number)
+(define (maxsimum lista)
+  (if(null? lista) -inf.0
+     (max (first lista) (maxsimum(rest lista)))))
+  
+;; the min&max function
+( : min&max : (Listof(Listof Number)) -> (Listof Number))
+(define (min&max listval)
+  (if (null? listval) '(-inf.0 +inf.0) 
+      (list (minimum (open-list listval)) (maxsimum (open-list listval)))))
+
+; chak the exam case
+(test (min&max '((1 2 3) (2 3 3 4) (9 2 -1) (233 11 
+90))) => '(-1.0 233.0))
+; chak the empty case
+(test (min&max '()) => '(-inf.0 +inf.0))
+; chak the anoter case
+(test (min&max '((-1 0 3) (-9 5 1) (8))) => '(-9.0 8.0))
+; chak the infinty case
+(test (min&max '((-inf.0 0 3) (-9 +inf.0 1) (8))) => '(-inf.0 +inf.0))
+
+
+
+#|
+the aplly function work on a list (they take every elemnt as part and not as list) and you want to use function ( + - * / or min max ege...) you can
+use thr apply function and give her  list and it will return the answer.
+here i give the function the list after using the open list becuse if  i sent without thst it will be list of lists and it shoud be only list.
+
+|#
+;; the min&max_apply function
+( : min&max_apply : (Listof(Listof Number)) -> (Listof Number))
+(define (min&max_apply listval)
+      (list (apply min (open-list listval)) (apply max (open-list listval))))
+
+#|@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ q2 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ |#
+
+(define-type Table
+
+  ;the implement of empty table
+  [EmptyTbl]
+  
+  ; the implement of add operation
+  [Add Symbol String Table])
+
+#|the serch -table is do look for a symbol(key) and return his string,
+if the table is empty or the value is not found in the table its return false
+else its return the string of the key.
+|#
+(: search-table : Symbol Table -> (U #f String))
+(define (search-table symbole table)
+         (cases table
+           [(EmptyTbl) #f]
+           [(Add symbol string temptable) (if(eq? symbole symbol) string
+                                             (search-table symbole temptable))]))
+         
+
+; the exsemple test
+(test (search-table 'a (Add 'a "AAA" (Add 'b "B" (Add 'a "A" 
+(EmptyTbl)))))
+=> "AAA")
+
+; the exsemple test
+(test (search-table 'c (Add 'a "AAA" (Add 'b "B" (Add 'a "A" 
+(EmptyTbl)))))
+=> #f)
+
+; chaek a difreent symbol
+(test (search-table '@ (Add '@ "AAA" (Add 'b "B" (Add 'a "A" 
+(EmptyTbl)))))
+=> "AAA")
+
+; chaek if his return the first apperins
+(test (search-table '@ (Add '@ "first" (Add '@ "midel" (Add '@ "last" 
+(EmptyTbl)))))
+=> "first")
+
+
+#| the delit table i did is the same idae like seaid did in the recording last yert but insted to doing it on listof number i did it on a table type.
+if i get a empty table i return a empty table else i chak if the symbole i want to delat is eqwal to rhesymbol i look in the table.
+ if is the same i return the table without the symble(delate him) and if he is not eqwel i continue to the next symbol
+ if the symbole dont show in the table i return the all tble.|#
+(: remove-item : Table Symbol -> Table)
+(define (remove-item table symbole)
+   (cases table
+           [(EmptyTbl) (EmptyTbl)]
+           [(Add symb str temptable)
+            (if(eq? symb symbole) temptable
+                (Add symb str (remove-item temptable symbole)))]))
+
+; the exsemple test
+(test (remove-item (Add 'a "AAA" (Add 'b "B" (Add 'a "A" 
+(EmptyTbl)))) 'a))
+
+; the exsemple test
+(test (remove-item (Add 'a "AAA" (Add 'b "B" (Add 'a "A" 
+(EmptyTbl)))) 'b))
+
+; remove more the one value
+(test (remove-item (Add 'a "AAA" (Add 'b "B" (Add 'b "B" 
+(EmptyTbl)))) 'b))

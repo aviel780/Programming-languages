@@ -1,0 +1,13 @@
+#lang pl
+#|q1
+the qustion sood be solved in a recurxiv way.
+i take hace time the first num and return them
+the founctison will get list and return a list of all the numbers
+|#
+( : q1 : (Listof List) -> (Listof Integer))
+(define (q1 listsvalue)
+   (if (null? list) '() (cons (first listsvalue) (q1 (rest listsvalue)))))
+#|
+the dificult was to understand wuch type of permeters we ger and recive
+the second thing is to think the seluosion way.
+|#
