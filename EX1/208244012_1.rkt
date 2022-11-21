@@ -29,6 +29,12 @@ and get from the the min max of the numbers.
 |#
 
 ;q2 min&max
+;; the min&max function
+( : min&max : (Listof(Listof Number)) -> (Listof Number))
+(define (min&max listval)
+  (if (null? listval) '(-inf.0 +inf.0) 
+      (list (minimum (open-list listval)) (maxsimum (open-list listval)))))
+
 ; min helper
 ( : minimum : (Listof Number) -> Number)
 (define (minimum listmin)
@@ -40,12 +46,6 @@ and get from the the min max of the numbers.
 (define (maxsimum lista)
   (if(null? lista) -inf.0
      (max (first lista) (maxsimum(rest lista)))))
-  
-;; the min&max function
-( : min&max : (Listof(Listof Number)) -> (Listof Number))
-(define (min&max listval)
-  (if (null? listval) '(-inf.0 +inf.0) 
-      (list (minimum (open-list listval)) (maxsimum (open-list listval)))))
 
 ; chak the exampl case
 (test (min&max '((1 2 3) (2 3 3 4) (9 2 -1) (233 11 
@@ -79,7 +79,7 @@ the only difrrent is the function return a int number and not float
 (test (min&max_apply '((1 2 3) (2 3 3 4) (9 2 -1) (233 11 
 90))) => '(-1 233))
 ; chak the empty case
-(test (min&max '()) => '(-inf.0 +inf.0))
+(test (min&max_apply '()) => '(-inf.0 +inf.0))
 ; chak the anoter case
 (test (min&max_apply '((-1 0 3) (-9 5 1) (8))) => '(-9 8))
 ; chak the infinty case
@@ -100,12 +100,13 @@ the only difrrent is the function return a int number and not float
 #|the serch -table is do look for a symbol(key) and return his string,
 if the table is empty or the value is not found in the table its return false
 else its return the string of the key.
+its do all the function in a recursiv way.
 |#
 (: search-table : Symbol Table -> (U #f String))
 (define (search-table symbole table)
          (cases table
            [(EmptyTbl) #f]
-           [(Add symbol string temptable) (if(eq? symbole symbol) string
+           [(Add symbl string temptable) (if(eq? symbole symbl) string
                                              (search-table symbole temptable))]))
          
 
@@ -138,9 +139,9 @@ if i get a empty table i return a empty table else i chak if the symbole i want 
 (define (remove-item table symbole)
    (cases table
            [(EmptyTbl) (EmptyTbl)]
-           [(Add symb str temptable)
-            (if(eq? symb symbole) temptable
-                (Add symb str (remove-item temptable symbole)))]))
+           [(Add symbl str temptable)
+            (if(eq? symbl symbole) temptable
+                (Add symbl str (remove-item temptable symbole)))]))
 
 ; the exsemple test
 (test (remove-item (Add 'a "AAA" (Add 'b "B" (Add 'a "A" 
