@@ -35,17 +35,17 @@ and get from the the min max of the numbers.
   (if (null? listval) '(-inf.0 +inf.0) 
       (list (minimum (open-list listval)) (maxsimum (open-list listval)))))
 
-; min helper
+; min func helper
 ( : minimum : (Listof Number) -> Number)
 (define (minimum listmin)
   (if (null? listmin) +inf.0
       (min (first listmin) (minimum(rest listmin)))))
 
-;;max helper
+;;max func helper
 ( : maxsimum : (Listof Number) -> Number)
-(define (maxsimum lista)
-  (if(null? lista) -inf.0
-     (max (first lista) (maxsimum(rest lista)))))
+(define (maxsimum listmax)
+  (if(null? listmax) -inf.0
+     (max (first listmax) (maxsimum(rest listmax)))))
 
 ; chak the exampl case
 (test (min&max '((1 2 3) (2 3 3 4) (9 2 -1) (233 11 
@@ -101,6 +101,9 @@ the only difrrent is the function return a int number and not float
 if the table is empty or the value is not found in the table its return false
 else its return the string of the key.
 its do all the function in a recursiv way.
+in the table cases i take the permeters of add and by thet i go over all
+the "key -values" of the table and thet how can i chak if the symbole are same and implement the function of serch-table.
+the serch-table will recive the first apperns of the symbol
 |#
 (: search-table : Symbol Table -> (U #f String))
 (define (search-table symbole table)
@@ -132,16 +135,16 @@ its do all the function in a recursiv way.
 
 
 #| the delit table i did is the same idae like seaid did in the recording last yert but insted to doing it on listof number i did it on a table type.
-if i get a empty table i return a empty table else i chak if the symbole i want to delat is eqwal to rhesymbol i look in the table.
+if i get a empty table i return a empty table else i chak if the symbole i want to delat is eqwal to the symbol i look in the table.
  if is the same i return the table without the symble(delate him) and if he is not eqwel i continue to the next symbol
  if the symbole dont show in the table i return the all tble.|#
 (: remove-item : Table Symbol -> Table)
 (define (remove-item table symbole)
    (cases table
            [(EmptyTbl) (EmptyTbl)]
-           [(Add symbl str temptable)
+           [(Add symbl string temptable)
             (if(eq? symbl symbole) temptable
-                (Add symbl str (remove-item temptable symbole)))]))
+                (Add symbl string (remove-item temptable symbole)))]))
 
 ; the exsemple test
 (test (remove-item (Add 'a "AAA" (Add 'b "B" (Add 'a "A" 
