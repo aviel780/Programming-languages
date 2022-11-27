@@ -29,25 +29,25 @@ and get from the the min max of the numbers.
 |#
 
 ;q2 min&max
-; min helper
-( : minimum : (Listof Number) -> Number)
-(define (minimum listmin)
-  (if (null? listmin) +inf.0
-      (min (first listmin) (minimum(rest listmin)))))
-
-;;max helper
-( : maxsimum : (Listof Number) -> Number)
-(define (maxsimum lista)
-  (if(null? lista) -inf.0
-     (max (first lista) (maxsimum(rest lista)))))
-  
 ;; the min&max function
 ( : min&max : (Listof(Listof Number)) -> (Listof Number))
 (define (min&max listval)
   (if (null? listval) '(-inf.0 +inf.0) 
       (list (minimum (open-list listval)) (maxsimum (open-list listval)))))
 
-; chak the exam case
+; min func helper
+( : minimum : (Listof Number) -> Number)
+(define (minimum listmin)
+  (if (null? listmin) +inf.0
+      (min (first listmin) (minimum(rest listmin)))))
+
+;;max func helper
+( : maxsimum : (Listof Number) -> Number)
+(define (maxsimum listmax)
+  (if(null? listmax) -inf.0
+     (max (first listmax) (maxsimum(rest listmax)))))
+
+; chak the exampl case
 (test (min&max '((1 2 3) (2 3 3 4) (9 2 -1) (233 11 
 90))) => '(-1.0 233.0))
 ; chak the empty case
@@ -56,8 +56,6 @@ and get from the the min max of the numbers.
 (test (min&max '((-1 0 3) (-9 5 1) (8))) => '(-9.0 8.0))
 ; chak the infinty case
 (test (min&max '((-inf.0 0 3) (-9 +inf.0 1) (8))) => '(-inf.0 +inf.0))
-
-
 
 #|
 the aplly function work on a list (they take every elemnt as part and not as list) and you want to use function ( + - * / or min max ege...) you can
@@ -68,7 +66,26 @@ here i give the function the list after using the open list becuse if  i sent wi
 ;; the min&max_apply function
 ( : min&max_apply : (Listof(Listof Number)) -> (Listof Number))
 (define (min&max_apply listval)
-      (list (apply min (open-list listval)) (apply max (open-list listval))))
+  ;its nedd becuse apply get at least one value becuse of thet we need to handel with empty case with difrend way
+  (if (null? listval) '(-inf.0 +inf.0)
+      (list (apply min (open-list listval)) (apply max (open-list listval)))))
+
+#|
+use the same test of the min&max function becuse the apply shoud return the same reuslt
+the only difrrent is the function return a int number and not float
+
+|#
+; chak the exampl case
+(test (min&max_apply '((1 2 3) (2 3 3 4) (9 2 -1) (233 11 
+90))) => '(-1 233))
+; chak the empty case
+(test (min&max_apply '()) => '(-inf.0 +inf.0))
+; chak the anoter case
+(test (min&max_apply '((-1 0 3) (-9 5 1) (8))) => '(-9 8))
+; chak the infinty case
+(test (min&max_apply '((-inf.0 0 3) (-9 +inf.0 1) (8))) => '(-inf.0 +inf.0))
+
+
 
 #|@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ q2 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ |#
 
@@ -83,12 +100,16 @@ here i give the function the list after using the open list becuse if  i sent wi
 #|the serch -table is do look for a symbol(key) and return his string,
 if the table is empty or the value is not found in the table its return false
 else its return the string of the key.
+its do all the function in a recursiv way.
+in the table cases i take the permeters of add and by thet i go over all
+the "key -values" of the table and thet how can i chak if the symbole are same and implement the function of serch-table.
+the serch-table will recive the first apperns of the symbol
 |#
 (: search-table : Symbol Table -> (U #f String))
 (define (search-table symbole table)
          (cases table
            [(EmptyTbl) #f]
-           [(Add symbol string temptable) (if(eq? symbole symbol) string
+           [(Add symbl string temptable) (if(eq? symbole symbl) string
                                              (search-table symbole temptable))]))
          
 
@@ -114,16 +135,16 @@ else its return the string of the key.
 
 
 #| the delit table i did is the same idae like seaid did in the recording last yert but insted to doing it on listof number i did it on a table type.
-if i get a empty table i return a empty table else i chak if the symbole i want to delat is eqwal to rhesymbol i look in the table.
+if i get a empty table i return a empty table else i chak if the symbole i want to delat is eqwal to the symbol i look in the table.
  if is the same i return the table without the symble(delate him) and if he is not eqwel i continue to the next symbol
  if the symbole dont show in the table i return the all tble.|#
 (: remove-item : Table Symbol -> Table)
 (define (remove-item table symbole)
    (cases table
            [(EmptyTbl) (EmptyTbl)]
-           [(Add symb str temptable)
-            (if(eq? symb symbole) temptable
-                (Add symb str (remove-item temptable symbole)))]))
+           [(Add symbl string temptable)
+            (if(eq? symbl symbole) temptable
+                (Add symbl string (remove-item temptable symbole)))]))
 
 ; the exsemple test
 (test (remove-item (Add 'a "AAA" (Add 'b "B" (Add 'a "A" 

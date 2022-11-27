@@ -134,7 +134,7 @@ the serch-table will recive the first apperns of the symbol
 => "first")
 
 
-#| the delit table i did is the same idae like seaid did in the recording last yert but insted to doing it on listof number i did it on a table type.
+#| the delit table i did is the same idae like I did in the recording last yert but insted to doing it on listof number i did it on a table type.
 if i get a empty table i return a empty table else i chak if the symbole i want to delat is eqwal to the symbol i look in the table.
  if is the same i return the table without the symble(delate him) and if he is not eqwel i continue to the next symbol
  if the symbole dont show in the table i return the all tble.|#
@@ -148,12 +148,13 @@ if i get a empty table i return a empty table else i chak if the symbole i want 
 
 ; the exsemple test
 (test (remove-item (Add 'a "AAA" (Add 'b "B" (Add 'a "A" 
-(EmptyTbl)))) 'a))
+(EmptyTbl)))) 'a) => (Add 'b "B" (Add 'a "A" (EmptyTbl))))
 
 ; the exsemple test
 (test (remove-item (Add 'a "AAA" (Add 'b "B" (Add 'a "A" 
-(EmptyTbl)))) 'b))
+(EmptyTbl)))) 'b) => (Add 'a "AAA" (Add 'a "A" (EmptyTbl))))
 
-; remove more the one value
+; 
 (test (remove-item (Add 'a "AAA" (Add 'b "B" (Add 'b "B" 
-(EmptyTbl)))) 'b))
+(EmptyTbl)))) 'b)=> (Add 'a "AAA" (Add 'b "B" (EmptyTbl))))
+
